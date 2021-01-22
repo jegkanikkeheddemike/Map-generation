@@ -108,9 +108,9 @@ public class Road {
             // Check new intersections
             ArrayList<RoadIntersection> newIntersections = new ArrayList<RoadIntersection>();
             for (Road v : Main.roads) {
-                if (v == this) {
+                if (v == this)
                     continue;
-                }
+
                 RoadIntersection check = roadCollision(newX, newY, newSX, newSY, v.startX, v.startY, v.slutX, v.slutY);
                 if (check != null) {
                     newIntersections.add(check);
@@ -119,14 +119,14 @@ public class Road {
 
             for (RoadIntersection rI : Main.intersections) {
                 float pDist = GMath.pointDist(newX, newY, rI.x, rI.y); // Check existing intersections
-                if (pDist < Settings.minRoadDist) {
+                if (pDist < Settings.minIntersectionDist) {
                     canBePlacedHere = false;
                     break;
                 }
 
                 for (RoadIntersection newRI : newIntersections) {// Check new intersections with existing intersections
                     float newPDist = GMath.pointDist(newRI.x, newRI.y, rI.x, rI.y);
-                    if (newPDist < Settings.minRoadDist) {
+                    if (newPDist < Settings.minIntersectionDist) {
                         canBePlacedHere = false;
                         break; // break inner loop
                     }
@@ -141,13 +141,47 @@ public class Road {
                         continue;
 
                     float newPDist = GMath.pointDist(newRI.x, newRI.y, rI.x, rI.y);
-                    if (newPDist < Settings.minRoadDist) {
+                    if (newPDist < Settings.minIntersectionDist) {
                         canBePlacedHere = false;
                         break; // break inner loop
                     }
                 }
                 if (!canBePlacedHere) { // break outer loop
                     break;
+                }
+            }
+
+            for (Road r : Main.roads) {
+                if (r == this)
+                    continue;
+
+                // check if parallel
+                if (orientation == r.orientation || orientation + 2 == r.orientation
+                        || orientation - 2 == r.orientation) {
+                    // Check if nearby
+                    if (GMath.pointDist(newX, newY, r.startX, r.startY) > Settings.parallelCheckDist
+                            && GMath.pointDist(newSX, newSY, r.startX, r.startY) > Settings.parallelCheckDist
+                            && GMath.pointDist(newX, newY, r.slutX, r.slutY) > Settings.parallelCheckDist
+                            && GMath.pointDist(newSX, newSY, r.slutX, r.slutY) > Settings.parallelCheckDist)
+                        continue;
+
+                    // if horizontal
+                    if (orientation == 0 || orientation == 2) {
+                        float dy = Math.abs(newSY - r.startY);
+                        if (dy < Settings.parallelMinDist) {
+                            canBePlacedHere = false;
+                            break;
+                        }
+                    }
+
+                    // if vertical
+                    if (orientation == 1 || orientation == 3) {
+                        float dx = Math.abs(newSX - r.startX);
+                        if (dx < Settings.parallelMinDist) {
+                            canBePlacedHere = false;
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -203,4 +237,3 @@ public class Road {
     }
 
 }
-

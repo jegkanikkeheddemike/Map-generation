@@ -1,13 +1,15 @@
 package src.Setup;
 
 public class Settings {
-    //Mapgeneration
+    // Mapgeneration
     public static int minRoadLength = 50;
     public static int maxRoadLength = 300;
     public static int startRoadLength = 500;
-    public static int minRoadDist = 70;
-    public static int roadAmount = 3000;
+    public static int minIntersectionDist = 60;
+    public static int roadAmount = 200;
+    public static int parallelMinDist = 50;
+    public static int parallelCheckDist = 400;
 
-    //Camera
+    // Camera
     public static float camSpeed = 3;
 }
