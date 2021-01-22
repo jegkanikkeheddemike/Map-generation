@@ -30,7 +30,7 @@ public class Main extends TApplet {
         g.translate(transX, transY);
         g.setColor(Color.WHITE);
         g.fillRect(0 - 10, 0 - 10, 20, 20);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
         for (Road v : roads) {
             v.drawVej(g);
         }
@@ -42,7 +42,7 @@ public class Main extends TApplet {
         // REVERSE TRANSLATION TO DRAW UI
         g.translate(-transX, -transY);
         g.setColor(Color.white);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString("Use WASD to move", 10, 50);
     }
 
@@ -60,6 +60,8 @@ public class Main extends TApplet {
         if (keyboard.keyDown('a')) {
             camX -= Settings.camSpeed;
         }
+        if (!Settings.createAllAtStart && roads.size() < Settings.roadAmount)
+            Mapgenerator.updateRoads();
     }
 
 }

@@ -15,6 +15,9 @@ public class Settings {
     public static int connectedMultiplier = 20;
     public static int distanceFromSpawnMultiplier = 30;
 
+    // Setup
+    public static boolean createAllAtStart = false;
+
     // Camera
     public static float camSpeed = 5;
 }

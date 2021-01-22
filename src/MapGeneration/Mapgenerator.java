@@ -13,14 +13,15 @@ public class Mapgenerator {
         Main.roads.add(new Road(centerX, centerY, 1, Settings.startRoadLength)); // south
         Main.roads.add(new Road(centerX, centerY, 2, Settings.startRoadLength)); // west
         Main.roads.add(new Road(centerX, centerY, 3, Settings.startRoadLength)); // north
-
-        while (Main.roads.size() < Settings.roadAmount) {
-            updateRoads();
+        if (Settings.createAllAtStart) {
+            while (Main.roads.size() < Settings.roadAmount) {
+                updateRoads();
+            }
+            System.out.println("Made " + Main.roads.size() + " roads");
         }
-        System.out.println("Made " + Main.roads.size() + " roads");
     }
 
-    private static void updateRoads() {
+    public static void updateRoads() {
         // Sandsynlighed for vej er baseret på længde, forbindelser og afstand til start
         ArrayList<Road> pool = new ArrayList<Road>();
         for (Road v : Main.roads) {
