@@ -133,7 +133,11 @@ public class Vej {
 
             }
             for (roadIntersection rI : newIntersections) { // Check new intersections with new intersections
+
                 for (roadIntersection newRI : newIntersections) {
+                    if (rI == newRI)
+                        continue;
+
                     float newPDist = GMath.pointDist(newRI.x, newRI.y, rI.x, rI.y);
                     if (newPDist < Settings.minRoadDist) {
                         canBePlacedHere = false;
