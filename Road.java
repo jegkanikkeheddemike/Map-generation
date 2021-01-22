@@ -2,13 +2,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Vej {
+public class Road {
     int startX, startY, slutX, slutY;
-    ArrayList<Vej> connected = new ArrayList<Vej>();
+    ArrayList<Road> connected = new ArrayList<Road>();
     int orientation; // 0 = east, 1 = south, 2 = west, 3 = north
     int length;
 
-    Vej(int startX, int startY, int orientation, int length) {
+    Road(int startX, int startY, int orientation, int length) {
         this.startX = startX;
         this.startY = startY;
         this.orientation = orientation;
@@ -103,7 +103,7 @@ public class Vej {
 
             // Check new intersections
             ArrayList<roadIntersection> newIntersections = new ArrayList<roadIntersection>();
-            for (Vej v : Main.roads) {
+            for (Road v : Main.roads) {
                 if (v == this) {
                     continue;
                 }
@@ -130,10 +130,8 @@ public class Vej {
                 if (!canBePlacedHere) { // break outer loop
                     break;
                 }
-
             }
             for (roadIntersection rI : newIntersections) { // Check new intersections with new intersections
-
                 for (roadIntersection newRI : newIntersections) {
                     if (rI == newRI)
                         continue;
@@ -152,13 +150,13 @@ public class Vej {
             tries++;
         }
         if (canBePlacedHere) {
-            Vej newVej = new Vej(newX, newY, newOrientation, newLength);
+            Road newVej = new Road(newX, newY, newOrientation, newLength);
             Main.roads.add(newVej);
         }
     }
 
     void updateConnections() {
-        for (Vej v : Main.roads) {
+        for (Road v : Main.roads) {
             if (v == this) {
                 continue;
             }

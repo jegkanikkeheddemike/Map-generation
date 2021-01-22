@@ -6,7 +6,7 @@ import com.thor.tapplet.TApplet;
 
 public class Main extends TApplet {
     private static final long serialVersionUID = 1L;
-    public static ArrayList<Vej> roads = new ArrayList<Vej>();
+    public static ArrayList<Road> roads = new ArrayList<Road>();
     public static ArrayList<roadIntersection> intersections = new ArrayList<roadIntersection>();
 
     public static void main(String[] args) {
@@ -17,10 +17,10 @@ public class Main extends TApplet {
     public void setup() {
         int centerX = WIDTH / 2;
         int centerY = HEIGHT / 2;
-        roads.add(new Vej(centerX + 10, centerY, 0, Settings.startRoadLength)); // east
-        roads.add(new Vej(centerX, centerY + 10, 1, Settings.startRoadLength)); // south
-        roads.add(new Vej(centerX - 10, centerY, 2, Settings.startRoadLength)); // west
-        roads.add(new Vej(centerX, centerY - 10, 3, Settings.startRoadLength)); // north
+        roads.add(new Road(centerX + 10, centerY, 0, Settings.startRoadLength)); // east
+        roads.add(new Road(centerX, centerY + 10, 1, Settings.startRoadLength)); // south
+        roads.add(new Road(centerX - 10, centerY, 2, Settings.startRoadLength)); // west
+        roads.add(new Road(centerX, centerY - 10, 3, Settings.startRoadLength)); // north
 
         for (int i = 0; i < Settings.roadAmount; i++) {
             updateRoads();
@@ -31,7 +31,7 @@ public class Main extends TApplet {
     public void draw() {
         g.setColor(Color.WHITE);
         g.fillRect(WIDTH / 2 - 10, HEIGHT / 2 - 10, 20, 20);
-        for (Vej v : roads) {
+        for (Road v : roads) {
             v.drawVej(g);
         }
         g.setColor(Color.red);
@@ -41,17 +41,17 @@ public class Main extends TApplet {
     }
 
     private void updateRoads() {
-        ArrayList<Vej> pool = new ArrayList<Vej>(); // Sandsynlighed for vej er baseret på længde og forbindelser
-        for (Vej v : roads) {
+        ArrayList<Road> pool = new ArrayList<Road>(); // Sandsynlighed for vej er baseret på længde og forbindelser
+        for (Road v : roads) {
             for (int i = 0; i < v.length - v.connected.size() * 10; i += 50) {
                 pool.add(v);
             }
         }
 
-        Vej update1 = pool.get(new Random().nextInt(pool.size()));
+        Road update1 = pool.get(new Random().nextInt(pool.size()));
         update1.makeRoad();
 
-        for (Vej v : roads) {
+        for (Road v : roads) {
             v.updateConnections();
         }
     }
