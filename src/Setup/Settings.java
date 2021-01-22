@@ -7,7 +7,7 @@ public class Settings {
     public static int startRoadLength = 500;
     public static int minIntersectionDist = 60;
     public static int roadAmount = 100;
-    public static int parallelMinDist = 50;
+    public static int parallelMinDist = 30;
     public static int parallelCheckDist = 200;
 
     // Choose road properties
