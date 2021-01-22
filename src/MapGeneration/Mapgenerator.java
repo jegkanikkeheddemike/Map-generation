@@ -24,7 +24,8 @@ public class Mapgenerator {
         // Sandsynlighed for vej er baseret på længde, forbindelser og afstand til start
         ArrayList<Road> pool = new ArrayList<Road>();
         for (Road v : Main.roads) {
-            for (int i = 0; i < v.length - v.connected.size() * 50; i += 50) {
+            for (int i = 0; i < v.length * Settings.lengthMultiplier + v.connected.size() * Settings.connectedMultiplier
+                    - GMath.pointDist(v.startX, v.startY, 0, 0) / Settings.distanceFromSpawnMultiplier; i += 50) {
                 pool.add(v);
             }
         }
