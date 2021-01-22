@@ -1,6 +1,10 @@
+package src.MapGeneration;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
+
+import src.Setup.*;
 
 public class Road {
     int startX, startY, slutX, slutY;
@@ -102,25 +106,25 @@ public class Road {
             canBePlacedHere = true;
 
             // Check new intersections
-            ArrayList<roadIntersection> newIntersections = new ArrayList<roadIntersection>();
+            ArrayList<RoadIntersection> newIntersections = new ArrayList<RoadIntersection>();
             for (Road v : Main.roads) {
                 if (v == this) {
                     continue;
                 }
-                roadIntersection check = roadCollision(newX, newY, newSX, newSY, v.startX, v.startY, v.slutX, v.slutY);
+                RoadIntersection check = roadCollision(newX, newY, newSX, newSY, v.startX, v.startY, v.slutX, v.slutY);
                 if (check != null) {
                     newIntersections.add(check);
                 }
             }
 
-            for (roadIntersection rI : Main.intersections) {
+            for (RoadIntersection rI : Main.intersections) {
                 float pDist = GMath.pointDist(newX, newY, rI.x, rI.y); // Check existing intersections
                 if (pDist < Settings.minRoadDist) {
                     canBePlacedHere = false;
                     break;
                 }
 
-                for (roadIntersection newRI : newIntersections) {// Check new intersections with existing intersections
+                for (RoadIntersection newRI : newIntersections) {// Check new intersections with existing intersections
                     float newPDist = GMath.pointDist(newRI.x, newRI.y, rI.x, rI.y);
                     if (newPDist < Settings.minRoadDist) {
                         canBePlacedHere = false;
@@ -131,8 +135,8 @@ public class Road {
                     break;
                 }
             }
-            for (roadIntersection rI : newIntersections) { // Check new intersections with new intersections
-                for (roadIntersection newRI : newIntersections) {
+            for (RoadIntersection rI : newIntersections) { // Check new intersections with new intersections
+                for (RoadIntersection newRI : newIntersections) {
                     if (rI == newRI)
                         continue;
 
@@ -160,12 +164,12 @@ public class Road {
             if (v == this) {
                 continue;
             }
-            roadIntersection rI = roadCollision(startX, startY, slutX, slutY, v.startX, v.startY, v.slutX, v.slutY);
+            RoadIntersection rI = roadCollision(startX, startY, slutX, slutY, v.startX, v.startY, v.slutX, v.slutY);
             if (rI != null) {
                 if (!connected.contains(v)) {
                     connected.add(v);
                     boolean iExists = false; // Check if intersection exists
-                    for (roadIntersection rI2 : Main.intersections) {
+                    for (RoadIntersection rI2 : Main.intersections) {
                         if (rI2.x == rI.x && rI2.y == rI.y) {
                             iExists = true;
                             break;
@@ -179,7 +183,7 @@ public class Road {
         }
     }
 
-    roadIntersection roadCollision(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+    RoadIntersection roadCollision(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
         // calculate the direction of the lines
         float den = ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
         if (den == 0.) {
@@ -193,18 +197,10 @@ public class Road {
             int intersectionX = (int) (x1 + (uA * (x2 - x1)));
             int intersectionY = (int) (y1 + (uA * (y2 - y1)));
             // System.out.println(intersectionX + " " + intersectionY);
-            return new roadIntersection(intersectionX, intersectionY);
+            return new RoadIntersection(intersectionX, intersectionY);
         }
         return null;
     }
 
 }
 
-class roadIntersection {
-    public int x, y;
-
-    roadIntersection(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-}
