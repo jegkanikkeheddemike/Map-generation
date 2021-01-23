@@ -105,6 +105,13 @@ public class Road {
 
             canBePlacedHere = true;
 
+            // Check if outside map
+            if (newSX > Settings.mapSize / 2 || newSX < -Settings.mapSize / 2 || newSY > Settings.mapSize / 2
+                    || newSY < -Settings.mapSize / 2) {
+                canBePlacedHere = false;
+                break;
+            }
+
             // Check new intersections
             ArrayList<RoadIntersection> newIntersections = new ArrayList<RoadIntersection>();
             for (Road v : Main.roads) {
@@ -184,12 +191,12 @@ public class Road {
                     }
                 }
             }
-
             tries++;
         }
         if (canBePlacedHere) {
             Road newVej = new Road(newX, newY, newOrientation, newLength);
             Main.roads.add(newVej);
+            Mapgenerator.roadCreatedThisTick = true;
         }
     }
 

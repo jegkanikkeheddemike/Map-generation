@@ -2,11 +2,17 @@ package src.MapGeneration;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.awt.Graphics;
 
 import src.Setup.*;
 
 public class Mapgenerator {
+    public static boolean roadsCreated = false;
+    public static boolean tilesCreated = false;
+    public static TileMap tileMap;
+
     public static void generateMap() {
+        tileMap = new TileMap(Settings.tileAmount);
         int centerX = 0;
         int centerY = 0;
         Main.roads.add(new Road(centerX, centerY, 0, Settings.startRoadLength)); // east
@@ -17,7 +23,42 @@ public class Mapgenerator {
             while (Main.roads.size() < Settings.roadAmount) {
                 updateRoads();
             }
+            roadsCreated = true;
             System.out.println("Made " + Main.roads.size() + " roads");
+            while (!tilesCreated) {
+                tileMap.update();
+            }
+        }
+    }
+
+    public static boolean roadCreatedThisTick = false;
+
+    public static void tickGenerate() { // Called if !Settings.createAllAtStart
+        
+        if (!roadsCreated) {
+            roadCreatedThisTick = false;
+            while (!roadCreatedThisTick) {
+                updateRoads();
+            }
+            if (Main.roads.size() == Settings.roadAmount && !Mapgenerator.roadsCreated) {
+                roadsCreated = true;
+                System.out.println("Made " + Main.roads.size() + " roads");
+
+            }
+        } else {
+            if (!tilesCreated) {
+                for (int i = 0; i < Settings.tileAmount / 4; i++)
+                    tileMap.update();
+            }
+        }
+    }
+
+    public static void drawMap(Graphics g) {
+        for (int x = 0; x < Settings.tileAmount; x++) {
+            for (int y = 0; y < Settings.tileAmount; y++) {
+                if (tileMap.map[x][y] != null)
+                    tileMap.map[x][y].draw(g);
+            }
         }
     }
 
