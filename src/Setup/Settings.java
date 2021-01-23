@@ -20,4 +20,5 @@ public class Settings {
 
     // Camera
     public static float camSpeed = 5;
+    public static float minScale = 0.1f;
 }

@@ -12,6 +12,7 @@ public class Main extends TApplet {
     public static ArrayList<Road> roads = new ArrayList<Road>();
     public static ArrayList<RoadIntersection> intersections = new ArrayList<RoadIntersection>();
     public static float camX, camY;
+    public static float scale = 1;
 
     public static void main(String[] args) {
         new Main().init(1920, 1080, "mapGen");
@@ -24,9 +25,9 @@ public class Main extends TApplet {
 
     @Override
     public void draw() {
-        int transX = (int) -camX + WIDTH / 2;
-        int transY = (int) -camY + HEIGHT / 2;
-
+        int transX = (int) (-camX + WIDTH / 2f / scale);
+        int transY = (int) (-camY + HEIGHT / 2f / scale);
+        g.scale(scale, scale);
         g.translate(transX, transY);
         g.setColor(Color.WHITE);
         g.fillRect(0 - 10, 0 - 10, 20, 20);
@@ -41,6 +42,7 @@ public class Main extends TApplet {
 
         // REVERSE TRANSLATION TO DRAW UI
         g.translate(-transX, -transY);
+        g.scale(1 / scale, 1 / scale);
         g.setColor(Color.white);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString("Use WASD to move", 10, 50);
@@ -49,19 +51,23 @@ public class Main extends TApplet {
     @Override
     public void tick() {
         if (keyboard.keyDown('w')) {
-            camY -= Settings.camSpeed;
+            camY -= Settings.camSpeed * 1 / scale;
         }
         if (keyboard.keyDown('s')) {
-            camY += Settings.camSpeed;
+            camY += Settings.camSpeed * 1 / scale;
         }
         if (keyboard.keyDown('d')) {
-            camX += Settings.camSpeed;
+            camX += Settings.camSpeed * 1 / scale;
         }
         if (keyboard.keyDown('a')) {
-            camX -= Settings.camSpeed;
+            camX -= Settings.camSpeed * 1 / scale;
         }
         if (!Settings.createAllAtStart && roads.size() < Settings.roadAmount)
             Mapgenerator.updateRoads();
+        scale -= mouse.scroll / 200;
+        if (scale < Settings.minScale) {
+            scale = Settings.minScale;
+        }
     }
 
 }
