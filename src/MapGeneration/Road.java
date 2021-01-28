@@ -11,12 +11,14 @@ public class Road {
     ArrayList<Road> connected = new ArrayList<Road>();
     int orientation; // 0 = east, 1 = south, 2 = west, 3 = north
     int length;
+    int id;
 
     Road(int startX, int startY, int orientation, int length) {
         this.startX = startX;
         this.startY = startY;
         this.orientation = orientation;
         this.length = length;
+        this.id = Main.roads.size();
         switch (orientation) {
             case 0:
                 slutX = startX + length;
@@ -40,7 +42,7 @@ public class Road {
     public void drawVej(Graphics g) {
         g.setColor(Color.WHITE);
         g.drawLine(startX, startY, slutX, slutY);
-        g.drawString(connected.size() + "", slutX, slutY);
+        g.drawString(id + "", slutX, slutY);
         g.setColor(Color.red);
     }
 

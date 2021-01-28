@@ -26,8 +26,8 @@ public class Main extends TApplet {
 
     @Override
     public void draw() {
-        int transX = (int) (-camX + WIDTH / 2f / scale);
-        int transY = (int) (-camY + HEIGHT / 2f / scale);
+        double transX = -camX + WIDTH / 2f / scale;
+        double transY = -camY + HEIGHT / 2f / scale;
         g.scale(scale, scale);
         g.translate(transX, transY);
         g.setColor(Color.WHITE);
